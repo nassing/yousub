@@ -1,0 +1,19 @@
+#text-input-wrapper {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  width: 100%;
+}
+#text-input-wrapper textarea {
+  resize: none;
+  width: calc(90% - 6rem);
+  max-width: 54rem;
+  outline: none;
+  border: none;
+  border-radius: 10px;
+  border-top-left-radius: 0;
+  padding-left: 1rem;
+}
+#text-input-wrapper button {
+  width: 4rem;
+}/*# sourceMappingURL=TextInput.css.map */

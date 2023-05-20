@@ -1,0 +1,60 @@
+@font-face {
+  font-family: "LeagueSpartan";
+  src: url("../resources/font/LeagueSpartan.ttf") format("truetype");
+}
+#video-history {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.662745098);
+  top: 0;
+  left: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+#video-history #video-history-wrapper {
+  background: white;
+  padding: 3rem;
+  padding-top: 1rem;
+  padding-bottom: 2rem;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  color: black;
+}
+#video-history #video-history-wrapper #close-video-history img {
+  height: 1rem;
+  margin-right: -2rem;
+  cursor: pointer;
+}
+#video-history #video-history-wrapper #video-history-text {
+  align-self: center;
+  font-family: "LeagueSpartan";
+  font-size: 2.4rem;
+  letter-spacing: -0.15rem;
+  margin: 0;
+  margin-top: 2rem;
+  margin-bottom: 1rem;
+}
+#video-history #video-history-wrapper #video-history-list {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  align-self: flex-start;
+  gap: 3rem;
+  max-width: 70vw;
+}
+#video-history #video-history-wrapper #video-history-list .video-history-item {
+  cursor: pointer;
+}
+#video-history #video-history-wrapper #video-history-list .video-history-item img {
+  height: 10rem;
+  border-radius: 10px;
+  border: 0.3rem solid black;
+}
+#video-history #video-history-wrapper #video-history-list .hidden-video-history-item {
+  cursor: not-allowed;
+}/*# sourceMappingURL=VideoHistory.css.map */

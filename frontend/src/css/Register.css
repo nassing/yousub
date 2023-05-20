@@ -1,0 +1,57 @@
+@font-face {
+  font-family: "LeagueSpartan";
+  src: url("../resources/font/LeagueSpartan.ttf") format("truetype");
+}
+#register {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.662745098);
+  top: 0;
+  left: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+#register #register-wrapper {
+  background: white;
+  padding: 3rem;
+  padding-top: 1rem;
+  padding-bottom: 2rem;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  color: black;
+}
+#register #register-wrapper img {
+  height: 1rem;
+  margin-right: -2rem;
+  cursor: pointer;
+}
+#register #register-wrapper #register-text {
+  align-self: center;
+  font-family: "LeagueSpartan";
+  font-size: 2.4rem;
+  letter-spacing: -0.15rem;
+  margin: 0;
+  margin-top: 2rem;
+  margin-bottom: 1rem;
+}
+#register #register-wrapper form {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+#register #register-wrapper form label {
+  display: flex;
+  gap: 1rem;
+  align-items: baseline;
+}
+#register #register-wrapper form input {
+  align-self: center;
+  font-family: "LeagueSpartan";
+}
+#register #register-wrapper form p {
+  font-family: "LeagueSpartan";
+}/*# sourceMappingURL=Register.css.map */

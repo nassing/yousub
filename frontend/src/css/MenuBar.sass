@@ -1,0 +1,61 @@
+@font-face
+    font-family: "LeagueSpartan"
+    src: url("../resources/font/LeagueSpartan.ttf") format("truetype")
+
+@keyframes rotate-animation
+  0%
+    transform: rotate(0deg)
+  100%
+    transform: rotate(360deg)
+
+#menu-bar
+    display: flex
+    justify-content: space-between
+    #yousub
+        display: flex
+        gap: 1rem
+        justify-content: center
+        align-items: center
+        img
+            height: 6vw
+            animation: rotate-animation 15s linear infinite
+        p
+            font-family: "LeagueSpartan"
+            font-size: 6vw
+            letter-spacing: -0.15rem
+            margin: 0
+    #menu-bar-rules
+      cursor: pointer
+      margin-left: 1rem
+    #menu-bar-right
+      display: flex
+      gap: 2rem
+      #menu-bar-logout
+        cursor: pointer
+      #menu-bar-history
+        cursor: pointer
+
+.tooltip
+  position: relative
+  &:hover
+    .tooltip-content
+      opacity: 1
+      display: inline-block
+  .tooltip-content
+    position: absolute
+    left: 420%
+    top: 2rem
+    z-index: 100
+    transform: translateX(-50%)
+    opacity: 0
+    transition: opacity 0.3s ease-in-out
+    padding: 0.5em
+    background-color: #F1F1F1
+    border-radius: 10px
+    color: black
+    white-space: nowrap
+    padding-left: 2rem
+    li
+      font-family: "LeagueSpartan"
+
+
