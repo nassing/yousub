@@ -1,10 +1,10 @@
 import React, { useEffect } from 'react';
 import '../css/VideoPlayer.css';
 
-export default function VideoPlayer({ videoLink, videoSource, username }) {
+export default function VideoPlayer({ videoLink, getNewVideo }) {
   useEffect(() => {
-    getNewVideo(username);
-  }, [username]);
+    getNewVideo();
+  }, [getNewVideo]);
 
   return (
     <div id="video-player-wrapper">
@@ -14,3 +14,4 @@ export default function VideoPlayer({ videoLink, videoSource, username }) {
     </div>
   );
 }
+
