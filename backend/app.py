@@ -6,23 +6,32 @@ import sqlite3
 app = Flask(__name__)
 CORS(app)
 
-def format_string(string):
-    allowed_characters = "abcdefghijklmnopqrstuvwxyz'"
-    formated_string = ""
+def formatString(string):
+    allowedCharacters = "abcdefghijklmnopqrstuvwxyz"
+    formatedString = ""
     for letter in string.lower():
-        if letter in allowed_characters:
-            formated_string += letter
-    return formated_string
+        if letter in allowedCharacters:
+            formatedString += letter
+    return formatedString
 
-def compare_answers(user_input, correct_answer):
-    user_input = format_string(user_input)
-    correct_answer = format_string(correct_answer)
-    match_len = 0
-    for i in range(min(len(user_input), len(correct_answer))):
-        if user_input[i] != correct_answer[i]:
+def findOriginalIndex(originalText, formattedText, formattedIndex):
+    originalIndex = 0
+    for i in range(len(originalText)):
+        if formattedText[formattedIndex] == originalText[i]:
+            originalIndex = i
             break
-        match_len += 1
-    return user_input[:match_len], user_input[match_len:]
+    return originalIndex
+
+def compareAnswers(userInput, correctAnswer):
+    formatedUserInput = formatString(userInput)
+    correctAnswer = formatString(correctAnswer)
+    formatedMatchLength = 0
+    for i in range(min(len(formatedUserInput), len(correctAnswer))):
+        if formatedUserInput[i] != correctAnswer[i]:
+            break
+        formatedMatchLength += 1
+    matchLength = findOriginalIndex(userInput, formatedUserInput, formatedMatchLength)
+    return userInput[:matchLength], userInput[matchLength:]
 
 
 @app.route('/', methods=['POST'])
