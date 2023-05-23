@@ -20,7 +20,7 @@ export default function TextInput({username, videoLink}) {
       userInput: userInput
     };
     
-    fetch('https://yousub-api.nassing.tk/input', {
+    fetch(process.env.REACT_APP_API_URL + 'input', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'

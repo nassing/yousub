@@ -1,0 +1,5 @@
+#!/bin/bash
+
+cd backend
+/bin/python3 -m pip install -r requirements.txt
+/bin/python3 app.py

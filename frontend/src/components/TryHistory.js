@@ -14,7 +14,7 @@ export default function TryHistory({username, videoLink}) {
       videoLink: videoLink
     };
 
-    fetch('https://yousub-api.nassing.tk/getHistory', {
+    fetch(process.env.REACT_APP_API_URL + 'getHistory', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'

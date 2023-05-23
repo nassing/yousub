@@ -71,7 +71,7 @@ def input():
         print(userInput)
         cursor.execute(f"SELECT correct_answer FROM videos WHERE link = '{link}'")
         correct_answer = cursor.fetchone()[0]
-        match, remaining = compare_answers(userInput, correct_answer)
+        match, remaining = compareAnswers(userInput, correct_answer)
         if remaining == "":
             cursor.execute("UPDATE users_videos SET solved = 1 WHERE username = ? AND link = ?", (username, link))
             connection.commit()
