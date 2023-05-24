@@ -64,7 +64,7 @@ def input():
         connection = sqlite3.connect("yousub.db")
         cursor = connection.cursor()
         username = request.json.get("username")
-        link = request.json.get("link")
+        link = request.json.get("videoLink")
         userInput = request.json.get("userInput")
         print(username)
         print(link)
@@ -111,6 +111,23 @@ def login():
     else:
         return "1" #Error
 
+@app.route('/getHistory', methods=['POST'])
+def getHistory():
+    username = request.json.get('username')
+    videoLink = request.json.get('videoLink')
+    conn = sqlite3.connect('yousub.db')
+    cur = conn.cursor()
+    cur.execute("SELECT id FROM users_videos WHERE username=? AND link=?", (username, videoLink))
+    try:
+        videoID = cur.fetchall()
+        userVideoID = videoID[0][0]
+        cur.execute("SELECT try_text FROM tries WHERE userVideoID=? ORDER BY try_number ASC", (userVideoID,))
+        result = cur.fetchall()
+        conn.close()
+        return jsonify(result)
+    except:
+        conn.close()
+        return jsonify([])
     
 if __name__ == '__main__':
     app.run()

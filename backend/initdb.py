@@ -33,10 +33,10 @@ def create_db():
     cursor.execute("""
         CREATE TABLE IF NOT EXISTS tries (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
-            users_videos_id INT NOT NULL,
+            user_video_id INT NOT NULL,
             try_number INT NOT NULL,
             try_text STRING NOT NULL,
-            FOREIGN KEY (users_videos_id) REFERENCES users_videos (id)
+            FOREIGN KEY (user_video_id) REFERENCES users_videos (id)
         )
         """)
 

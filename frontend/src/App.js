@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 
 import Head from './components/Head';
 import MenuBar from './components/MenuBar';
@@ -45,11 +45,50 @@ export default function App() {
       body: JSON.stringify(data)
     })
     .then(response => {
+      if (response.ok) { 
+        response.text().then(text => {
+          if(text === "0") {
+            setLoggedIn(true);
+            setUsername(username);
+          }
+          else if(text === "1")
+          {
+            //Error
+          }
+        })
+      } else {
+        throw new Error('Error adding element');
+      }
+    })
+    .catch(error => console.log(error.message));
+  }
+    
+
+  function handleLogin(username, password) {
+
+    if(username === null || password === null || username === '' || password === '')
+    {
+      return ;
+    }
+
+    const data = {
+      username: username,
+      password: password
+    };
+    
+    fetch(process.env.REACT_APP_API_URL + 'login', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(data)
+    })
+    .then(response => {
       if (response.ok) {
         response.text().then(text => {
           if(text === "0") {
             setLoggedIn(true);
-            setUsername(username);    
+            setUsername(username);
           }
           else if(text === "1")
           {
@@ -63,8 +102,8 @@ export default function App() {
     .catch(error => console.log(error.message));
   }
 
-  function getNewVideo() {
-    if (username === null || username === '') {
+  useEffect(() => {
+    if (!loggedIn || username === null || username === '') {
       return;
     }
 
@@ -90,47 +129,9 @@ export default function App() {
         setVideoLink(data.link);
         setVideoSource(data.source);
       })
-      .catch(error => console.log(error.message));
-  };
-
-  function handleLogin(username, password) {
-
-    if(username === null || password === null || username === '' || password === '')
-    {
-      return ;
-    }
-
-    const data = {
-      username: username,
-      password: password
-    };
-    
-    fetch(process.env.REACT_APP_API_URL + 'login', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(data)
-    })
-    .then(response => {
-      if (response.ok) {
-        response.text().then(text => {
-          console.log(text);
-          if(text === "0") {
-            setLoggedIn(true);
-            setUsername(username);     
-          }
-          else if(text === "1")
-          {
-            //Error
-          }
-        })
-      } else {
-        throw new Error('Error adding element');
-      }
-    })
-    .catch(error => console.log(error.message));
-  }
+      .catch(error => console.log(error.message)
+    );
+  }, [loggedIn, username]);
 
   if (!loggedIn) {
     return (
@@ -138,17 +139,17 @@ export default function App() {
         <Login handleLogin={handleLogin} handleRegister={handleRegister} />
      </>
     )
+  } else {
+    return (
+      <>
+        <Head />
+        <MenuBar setShowVideoHistory={setShowVideoHistory} logout={logout}/>
+        <VideoPlayer videoLink={videoLink}/>
+        <TryHistory videoLink={videoLink} username={username}/>
+        <TextInput videoLink={videoLink} username={username}/>
+        <Source sourceLink={videoSource}/>
+        {showVideoHistory ? <VideoHistory setShowVideoHistory={setShowVideoHistory}/> : null}
+      </>
+    );
   }
-
-  return (
-    <>
-      <Head />
-      <MenuBar setShowVideoHistory={setShowVideoHistory} logout={logout}/>
-      <VideoPlayer getNewVideo={getNewVideo} />
-      <TryHistory videoLink={videoLink}/>
-      <TextInput videoLink={videoLink}/>
-      <Source sourceLink={videoSource}/>
-      {showVideoHistory ? <VideoHistory setShowVideoHistory={setShowVideoHistory}/> : null}
-    </>
-  );
 }
