@@ -48,7 +48,6 @@ def index():
     temp = random.choice(links)
     link = temp[0]
     source = temp[1]
-    cursor.execute("INSERT INTO users_videos (username, link) VALUES (?, ?)", (username, link))
     connection.commit()
     cursor.close()
     connection.close()
@@ -61,25 +60,28 @@ def index_get():
 @app.route('/input', methods=['POST'])
 def input():
     try:
-        connection = sqlite3.connect("yousub.db")
-        cursor = connection.cursor()
         username = request.json.get("username")
         link = request.json.get("videoLink")
         userInput = request.json.get("userInput")
-        print(username)
-        print(link)
-        print(userInput)
-        cursor.execute(f"SELECT correct_answer FROM videos WHERE link = '{link}'")
-        correct_answer = cursor.fetchone()[0]
-        match, remaining = compareAnswers(userInput, correct_answer)
+        
+        connection = sqlite3.connect("yousub.db")
+        cursor = connection.cursor()
+        cursor.execute("INSERT INTO users_videos (username, link) SELECT ?, ? WHERE NOT EXISTS (SELECT username, link FROM users_videos WHERE username = ? AND link = ?)", (username, link, username, link))
+        connection.commit()
+        correctAnswer = cursor.execute(f"SELECT subtitles FROM videos WHERE link = '{link}'").fetchone()[0]
+        match, remaining = compareAnswers(userInput, correctAnswer)
+        userVideoID = cursor.execute(f"SELECT id FROM users_videos WHERE username = '{username}' AND link = '{link}'").fetchone()[0]
+        tryNumber = (cursor.execute(f"SELECT MAX(try_number) FROM tries WHERE user_video_id = '{userVideoID}'").fetchone()[0] or 0) + 1
         if remaining == "":
-            cursor.execute("UPDATE users_videos SET solved = 1 WHERE username = ? AND link = ?", (username, link))
+            cursor.execute("UPDATE users_videos SET solved = 1 WHERE id = ?", (userVideoID,))
             connection.commit()
-        cursor.execute(f"INSERT INTO tries (username, link, userInput) VALUES ('{username}', '{link}', '{userInput}')")
+        cursor.execute(f"INSERT INTO tries (user_video_id, try_number, try_text) VALUES ('{userVideoID}', '{tryNumber}', '{userInput}')")
+        connection.commit()
         cursor.close()
         connection.close()
         return "0"
     except:
+        print("error /input")
         return "1"
 
 @app.route('/register', methods=['POST'])
@@ -87,8 +89,6 @@ def register_post():
     try:
         username = request.json.get('username')
         password = request.json.get('password')
-        print(username)
-        print(password)
         conn = sqlite3.connect('yousub.db')
         cur = conn.cursor()
         cur.execute("INSERT INTO users (username, password) VALUES (?, ?)", (username, password))
@@ -119,14 +119,20 @@ def getHistory():
     cur = conn.cursor()
     cur.execute("SELECT id FROM users_videos WHERE username=? AND link=?", (username, videoLink))
     try:
+        print("test0")
         videoID = cur.fetchall()
         userVideoID = videoID[0][0]
-        cur.execute("SELECT try_text FROM tries WHERE userVideoID=? ORDER BY try_number ASC", (userVideoID,))
+        print(userVideoID)
+        cur.execute("SELECT try_text FROM tries WHERE user_video_id=? ORDER BY try_number ASC", (userVideoID,))
         result = cur.fetchall()
+        print(result)
         conn.close()
+        print(result)
+        print(jsonify(result))
         return jsonify(result)
     except:
         conn.close()
+        print("uh oh")
         return jsonify([])
     
 if __name__ == '__main__':

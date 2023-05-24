@@ -2,9 +2,9 @@ import '../css/TryHistory.css';
 import React, {useState, useEffect} from 'react';
 
 export default function TryHistory({username, videoLink}) {
-  const[correctHistory] = useState(['This is ', 'Another ', 'One correct answer ', '']);
-  const[incorrectHistory] = useState(['An example of answer', 'example', '', 'One wrong answer']);
-  const[currentIndex] = useState(0);
+  const[correctHistory, setCorrectHistory] = useState([]);
+  const[incorrectHistory, setIncorrectHistory] = useState([]);
+  const[currentIndex, setCurrentIndex] = useState(0);
 
   
   function getHistory(username, videoLink) {
@@ -29,7 +29,17 @@ export default function TryHistory({username, videoLink}) {
       }
     })
     .then(data => {
-      console.log(data);})
+      console.log(data);
+      let tempCorrectHistory = [];
+      let tempIncorrectHistory = [];
+      for (let i = 0; i < data.length; i++) {
+        tempCorrectHistory.push(data[i][0]);
+        tempIncorrectHistory.push(data[i][1]);
+      }
+      setCorrectHistory(tempCorrectHistory);
+      setIncorrectHistory(tempIncorrectHistory);
+      setCurrentIndex(data.length - 1);
+    })
     .catch(error => console.log(error.message)); 
   }
 

@@ -55,6 +55,6 @@ export default function TextInput({username, videoLink}) {
       autofocus
       rows="3"
     /> 
-    <button onClick={handleSubmit()}>Submit</button>
+    <button onClick={() => handleSubmit()}>Submit</button>
   </div>);
 }
