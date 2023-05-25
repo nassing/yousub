@@ -81,7 +81,6 @@ def input():
         connection.close()
         return "0"
     except:
-        print("error /input")
         return "1"
 
 @app.route('/register', methods=['POST'])
@@ -111,29 +110,27 @@ def login():
     else:
         return "1" #Error
 
-@app.route('/getHistory', methods=['POST'])
-def getHistory():
+@app.route('/getTryHistory', methods=['POST'])
+def getTryHistory():
     username = request.json.get('username')
     videoLink = request.json.get('videoLink')
     conn = sqlite3.connect('yousub.db')
     cur = conn.cursor()
     cur.execute("SELECT id FROM users_videos WHERE username=? AND link=?", (username, videoLink))
     try:
-        print("test0")
-        videoID = cur.fetchall()
-        userVideoID = videoID[0][0]
-        print(userVideoID)
-        cur.execute("SELECT try_text FROM tries WHERE user_video_id=? ORDER BY try_number ASC", (userVideoID,))
-        result = cur.fetchall()
-        print(result)
-        conn.close()
-        print(result)
-        print(jsonify(result))
-        return jsonify(result)
+        userVideoID = cur.fetchone()[0]
+        if userVideoID:
+            correctAnswer = cur.execute(f"SELECT subtitles FROM videos WHERE link = '{videoLink}'").fetchone()[0]
+            tries = cur.execute("SELECT try_text FROM tries WHERE user_video_id=? ORDER BY try_number ASC", (userVideoID,)).fetchall()
+            correctHistory, incorrectHistory = zip(*[compareAnswers(userAnswer[0], correctAnswer) for userAnswer in tries])
+            conn.close()
+            return jsonify({"correctHistory": correctHistory, "incorrectHistory": incorrectHistory})
+        else:
+            conn.close()
+            return jsonify({"correctHistory": [], "incorrectHistory": []})
     except:
         conn.close()
-        print("uh oh")
-        return jsonify([])
+        return jsonify({"correctHistory": [], "incorrectHistory": []})
     
 if __name__ == '__main__':
     app.run()

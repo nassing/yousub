@@ -17,6 +17,10 @@ export default function App() {
   const [videoLink, setVideoLink] = useState('');
   const [videoSource, setVideoSource] = useState('');
 
+  const[correctHistory, setCorrectHistory] = useState([]);
+  const[incorrectHistory, setIncorrectHistory] = useState([]);
+  const[currentTryIndex, setCurrentTryIndex] = useState(0);
+
   function logout() {
     setLoggedIn(false);
     setShowVideoHistory(false);
@@ -101,6 +105,36 @@ export default function App() {
     })
     .catch(error => console.log(error.message));
   }
+  
+  function getTryHistory(username, videoLink) {
+
+    const data = {
+      username: username,
+      videoLink: videoLink
+    };
+
+    fetch(process.env.REACT_APP_API_URL + 'getTryHistory', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(data)
+    })
+    .then(response => {
+      if (response.ok) {
+        return response.json();
+      } else {
+        throw new Error('Error getting history');
+      }
+    })
+    .then(data => {
+      console.log(data);
+      setCorrectHistory(data.correctHistory);
+      setIncorrectHistory(data.incorrectHistory);
+      if(data.correctHistory.length > 0) {setCurrentTryIndex(data.correctHistory.length - 1);}
+    })
+    .catch(error => console.log(error.message)); 
+  }
 
   useEffect(() => {
     if (!loggedIn || username === null || username === '') {
@@ -128,6 +162,7 @@ export default function App() {
       .then(data => {
         setVideoLink(data.link);
         setVideoSource(data.source);
+        getTryHistory(username, data.link);
       })
       .catch(error => console.log(error.message)
     );
@@ -145,8 +180,8 @@ export default function App() {
         <Head />
         <MenuBar setShowVideoHistory={setShowVideoHistory} logout={logout}/>
         <VideoPlayer videoLink={videoLink}/>
-        <TryHistory videoLink={videoLink} username={username}/>
-        <TextInput videoLink={videoLink} username={username}/>
+        <TryHistory correctHistory={correctHistory} incorrectHistory={incorrectHistory} currentTryIndex={currentTryIndex} setCurrentTryIndex={setCurrentTryIndex}/>
+        <TextInput videoLink={videoLink} username={username} getTryHistory={getTryHistory}/>
         <Source sourceLink={videoSource}/>
         {showVideoHistory ? <VideoHistory setShowVideoHistory={setShowVideoHistory}/> : null}
       </>

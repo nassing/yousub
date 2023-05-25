@@ -1,7 +1,7 @@
 import '../css/TextInput.css';
 import React, {useState} from 'react';
 
-export default function TextInput({username, videoLink}) {
+export default function TextInput({username, videoLink, getTryHistory}) {
   const [userInput, setUserInput] = useState('');
 
   function handleInput(event) {
@@ -31,7 +31,8 @@ export default function TextInput({username, videoLink}) {
       if (response.ok) {
         response.text().then(text => {
           if(text === "0") {
-            setUserInput('');     
+            setUserInput('');
+            getTryHistory(username, videoLink);
           }
           else if(text === "1")
           {
