@@ -15,14 +15,17 @@
   display: flex;
   justify-content: space-between;
 }
-#try-history-wrapper #try-history #try-history-main #try-history-item {
+#try-history-wrapper #try-history #try-history-main .try-history-arrow {
+  padding-left: 0.3rem;
+  padding-right: 0.3rem;
   display: flex;
-  white-space: pre-wrap;
+  align-items: center;
+  justify-content: center;
 }
-#try-history-wrapper #try-history #try-history-main #try-history-item #try-history-item-correct {
+#try-history-wrapper #try-history #try-history-main #try-history-item-correct {
   color: green;
 }
-#try-history-wrapper #try-history #try-history-main #try-history-item #try-history-item-incorrect {
+#try-history-wrapper #try-history #try-history-main #try-history-item-incorrect {
   color: red;
 }
 #try-history-wrapper #try-history #try-history-pages-number {

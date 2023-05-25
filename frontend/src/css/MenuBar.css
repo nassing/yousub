@@ -2,14 +2,6 @@
   font-family: "LeagueSpartan";
   src: url("../resources/font/LeagueSpartan.ttf") format("truetype");
 }
-@-webkit-keyframes rotate-animation {
-  0% {
-    transform: rotate(0deg);
-  }
-  100% {
-    transform: rotate(360deg);
-  }
-}
 @keyframes rotate-animation {
   0% {
     transform: rotate(0deg);
@@ -30,8 +22,7 @@
 }
 #menu-bar #yousub img {
   height: 6vw;
-  -webkit-animation: rotate-animation 15s linear infinite;
-          animation: rotate-animation 15s linear infinite;
+  animation: rotate-animation 15s linear infinite;
 }
 #menu-bar #yousub p {
   font-family: "LeagueSpartan";

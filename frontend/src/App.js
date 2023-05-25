@@ -128,7 +128,6 @@ export default function App() {
       }
     })
     .then(data => {
-      console.log(data);
       setCorrectHistory(data.correctHistory);
       setIncorrectHistory(data.incorrectHistory);
       if(data.correctHistory.length > 0) {setCurrentTryIndex(data.correctHistory.length - 1);}

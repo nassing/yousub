@@ -14,24 +14,34 @@ def formatString(string):
             formatedString += letter
     return formatedString
 
-def findOriginalIndex(originalText, formattedText, formattedIndex):
-    originalIndex = 0
-    for i in range(len(originalText)):
-        if formattedText[formattedIndex] == originalText[i]:
-            originalIndex = i
-            break
-    return originalIndex
+def findOriginalIndex(string, index):
+    allowedCharacters = "abcdefghijklmnopqrstuvwxyz"
+    count = 0
+    for i in range(len(string)):
+        if string[i] in allowedCharacters:
+            count += 1
+        if count == index:
+            return i + 1
+    return len(string)
+
+
 
 def compareAnswers(userInput, correctAnswer):
     formatedUserInput = formatString(userInput)
     correctAnswer = formatString(correctAnswer)
-    formatedMatchLength = 0
+    match_index = 0
     for i in range(min(len(formatedUserInput), len(correctAnswer))):
         if formatedUserInput[i] != correctAnswer[i]:
+            if i == 0:
+                return "", userInput
+            match_index = i - 1
             break
-        formatedMatchLength += 1
-    matchLength = findOriginalIndex(userInput, formatedUserInput, formatedMatchLength)
-    return userInput[:matchLength], userInput[matchLength:]
+        elif i == min(len(formatedUserInput), len(correctAnswer)) - 1:
+            match_index = i + 1
+    match_index = findOriginalIndex(userInput, match_index)
+    if userInput[match_index:] == "" and len(formatedUserInput) < len(correctAnswer):
+        return userInput[:match_index], " ..."
+    return userInput[:match_index], userInput[match_index:]
 
 
 @app.route('/', methods=['POST'])
